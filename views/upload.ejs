@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="form" method="post">
+      <label for="fn">First name</label><br />
+      <input type="text" name="fn" id="fn" /> <br /><br />
+
+      <label for="ln">Last name</label><br />
+      <input type="text" name="ln" id="ln" /> <br /><br />
+
+      <input type="file" name="file" id="files" multiple /> <br /><br />
+
+      <button type="submit">Submit</button><br />
+    </form>
+    <br />
+    <script>
+      const form = document.getElementById("form");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const fn = document.getElementById("fn");
+        const ln = document.getElementById("ln");
+        const files = document.getElementById("files");
+
+        const formData = new FormData();
+        formData.append("fn", fn.value);
+        formData.append("ln", ln.value);
+
+        for (let i = 0; i < files.files.length; i++) {
+          formData.append("files", files.files[i]);
+        }
+
+        fetch("http://localhost:3000/uploads", {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            // After upload, reload to show updated info
+            window.location.reload();
+          });
+      });
+    </script>
+
+    <p>Uploaded information:</p>
+    <br />
+    <p>First Name: <%= typeof fn !== "undefined" ? fn : "" %></p>
+    <p>Last Name: <%= typeof ln !== "undefined" ? ln : "" %></p>
+    <p>Uploaded files:</p>
+    <br />
+    <% if (files && files.length > 0) { %>
+      <ol>
+        <% for(let i=0; i<files.length; i++){ %>
+          <li><%= files[i].originalname %></li>
+        <% } %>
+      </ol>
+    <% } else { %>
+      <p>No files uploaded yet.</p>
+    <% } %>
+  </body>
+</html>
