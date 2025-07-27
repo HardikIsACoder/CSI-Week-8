@@ -36,11 +36,11 @@ WEEK 8/
    ```
 2. **Navigate to the project directory:**
    ```sh
-   cd "WEEK 8"
+   cd "CSI-Week-8"
    ```
 3. **Install dependencies:**
    ```sh
-   npm install express multer ejs
+   npm install
    ```
 
 ## Running the Project
